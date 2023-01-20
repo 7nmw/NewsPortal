@@ -1,0 +1,35 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% load custom_filters %}
+
+{% block title %}
+Post
+{% endblock title %}
+
+
+{% block content %}
+   <h1>Детальная информация</h1>
+   <hr>
+   {% if post %}
+       <table>
+           <tr>
+               <td>Заголовок</td>
+               <td>Дата публикации</td>
+               <td>Содержание</td>
+           </tr>
+           <tr>
+               <td>{{ post.header|censors }}</td>
+                <!-- Добавим специальный фильтр truncatechars,
+                чтобы ограничить количество символов до 15.
+                Все остальные символы превратятся в многоточие. -->
+               <td>{{ post.datetime_post|date:'d M Y' }}</td>
+               <td>{{ post.content|censors }}</td>
+           </tr>
+
+       </table>
+   {% else %}
+       <h2>Новости нет!</h2>
+   {% endif %}
+{% endblock content %}
