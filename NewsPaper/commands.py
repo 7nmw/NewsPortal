@@ -1,4 +1,9 @@
 
+новое приложение news
+python manage.py startapp news
+
+команду создания проекта:
+django-admin startproject NewsPaper
 
 python manage.py makemigrations
 python manage.py migrate
