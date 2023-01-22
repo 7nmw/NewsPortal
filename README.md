@@ -112,7 +112,7 @@ print("Рейтинг автора:", best_autor.user_rating)
 
 
 #10.	Вывести дату добавления, username автора, рейтинг,
-# заголовок и превью лучшей статьи, основываясь на лайках/дислайках к этой статье.
+заголовок и превью лучшей статьи, основываясь на лайках/дислайках к этой статье.
 best_post=Post.objects.all().order_by('-rating_post')[0]
 print("Дата:", best_post.datetime_post)
 print("Автор:", best_post.author_name.user_name)
