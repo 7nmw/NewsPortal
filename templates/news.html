@@ -24,12 +24,14 @@ News
 
            {% for post in news %}
            <tr>
-               <td>{{ post.header }}</td>
+               <td>{{ post.header|censors }}</td>
                <td>{{ post.datetime_post|date:'d M Y' }}</td>
-               <td>{{ post.content|truncatewords:20 }}</td>
+               <td>{{ post.content|censors|truncatewords:20 }}</td>
            </tr>
            {% endfor %}
-
+    <form action="/subscribe/post/">
+        <input type="submit" value="Подписаться на новинки в категории">
+    </form>
        </table>
    {% else %}
        <h2>Новостей нет!</h2>

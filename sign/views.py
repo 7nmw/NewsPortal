@@ -3,10 +3,11 @@ from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 from django.views.generic.edit import CreateView
 from .models import BaseRegisterForm
-from django.shortcuts import redirect
+from django.shortcuts import render, reverse, redirect
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
-
+from django.template.loader import render_to_string
+from django.core.mail import mail_admins
 
 
 class BaseRegisterView(CreateView):

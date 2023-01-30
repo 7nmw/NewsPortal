@@ -25,9 +25,8 @@ urlpatterns = [
    path('news/', include('news.urls')),
    path('article/', include('news.urls')),
    path('news/search/', PostSearch.as_view(), name='search'),
-#   path('index/', include('protect.urls')),
    path('', include('protect.urls')),
    path('sign/', include('sign.urls')),
    path('accounts/', include('allauth.urls')), #http://127.0.0.1:8000/accounts/login/
-
+   path('subscribe/', include('news.urls')), #http://127.0.0.1:8000/subscribe/
 ]
