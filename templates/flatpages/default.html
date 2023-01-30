@@ -12,7 +12,10 @@
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     </head>
     <body>
+
+
         <!-- Responsive navbar-->
+
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
             <div class="container">
                 <a class="navbar-brand" href="#">Django flatpages</a>
@@ -29,6 +32,8 @@
                                 <span class="sr-only">(current)</span>
                             </a>
                         </li>
+                        {% load cache %}
+                        {% cache 30 sidebar %}
                         <li class="nav-item">
                             <a class="nav-link" href="/news/">News</a>
                         </li>
@@ -41,6 +46,13 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/news/search">Search</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/accounts/login/">Sign In</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/subscribe/post/">Subscribe</a>
+                        </li>
+                        {% endcache %}
                     </ul>
                 </div>
             </div>

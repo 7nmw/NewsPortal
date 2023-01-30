@@ -9,8 +9,15 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+import logging
+logger = logging.getLogger(__name__)
+
 import os
 from pathlib import Path
+
+
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,27 +27,28 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-t%j(5ig!hw$tb&0bx0(&aq79s62r93nq3^mnu3*%0tbm&=z$op'
+SECRET_KEY =os.getenv('DJ_SECRET_KEY')
+#SECRET_KEY ='asdw1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
+    'django.contrib.admin', #админка
+    'django.contrib.auth', # система аутентификации.
+    'django.contrib.contenttypes', # фреймворк для content types.
+    'django.contrib.sessions', #сессионный фреймворк.
+    'django.contrib.messages', #фреймворк для отправки сообщений.
+    'django.contrib.staticfiles', #фреймворк для работы со статичными файлами.
+    'debug_toolbar', #для оптимизации сайта
+    'news.apps.NewsConfig',
     'django.contrib.sites',
     'django.contrib.flatpages',
-    'news',
     'accounts',
     'django_filters',
     'sign',
@@ -49,6 +57,9 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'django_apscheduler',
+#реализовывать периодические задачи, поэтому существует расширение django-celery-beat, которое выполняет роль планировщика задач для Celery
+    'django_celery_beat',
 ]
 
 SITE_ID = 1
@@ -61,6 +72,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'NewsPaper.urls'
@@ -121,7 +133,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
@@ -129,10 +141,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-]
+
 
 
 # Static files (CSS, JavaScript, Images)
@@ -155,7 +164,159 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email' #аутентификация будет происходить посредством электронной почты
-ACCOUNT_EMAIL_VERIFICATION = 'none' #верификация почты отсутствует
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory' #верификация почты отсутствует
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 #Чтобы allauth распознал нашу форму как ту, что должна выполняться вместо формы по умолчанию
 ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}
+
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_EMAIL')  # здесь указываем уже свою ПОЛНУЮ почту, с которой будут отправляться письма
+
+EMAIL_HOST = 'smtp.yandex.ru'  # адрес сервера Яндекс-почты для всех один и тот же
+EMAIL_PORT = 465  # порт smtp сервера тоже одинаковый
+EMAIL_HOST_USER = os.getenv('MAIL_USER')  # ваше имя пользователя, например, если ваша почта user@yandex.ru, то сюда надо писать user, иными словами, это всё то что идёт до собаки
+EMAIL_HOST_PASSWORD = os.getenv('MAIL_PASSWORD')  # пароль от почты rwmjcrxjuuaupttg
+EMAIL_USE_SSL = True  # Яндекс использует ssl, подробнее о том, что это, почитайте в дополнительных источниках, но включать его здесь обязательно
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_BROKER_TRANSPORT_OPTION = {'visibility_timeout': 3600}
+PREFETCH_MULTIPLIER=1
+#тем самым указав Celery использовать новый планировщик задач, только что установленный нами.
+CELERY_BEAT_SCHEDULER='django_celery_beat.schedulers:DatabaseScheduler'
+
+
+
+# формат даты, которую будет воспринимать наш задачник (вспоминаем модуль по фильтрам)
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+
+# если задача не выполняется за 25 секунд, то она автоматически снимается, можете поставить время побольше, но как правило, это сильно бьёт по производительности сервера
+APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, 'coolsite_cache'),
+    }
+}
+
+#Логирование
+
+LOGGING = {
+    'version': 1, #ключ version всегда определяется как 1, на текущий момент это единственно допустимое значение
+    'disable_existing_loggers': False, # контролирует работу существующей (стандартной) схемы логирования Django.
+    'formatters': { #простой формат записи сообщений. В данном случае это уровень логирования сообщения и само сообщение.
+        'simple': {
+            'format': '%(asctime)s %(levelname)s %(message)s', # пункт 1 часть 1
+        },
+        'warning_console': { # пункт 1 часть 2
+            'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s %(exc_info)s',
+        },
+        'general_file': { # пункт 2
+            'format': '%(asctime)s %(levelname)s %(module)s %(message)s',
+        },
+        'error_file': { # пункт 3
+            'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s %(exc_info)s',
+        },
+        'security_file': { # пункт 4
+            'format': '%(asctime)s %(levelname)s %(module)s %(message)s',
+        },
+        'error_mail': {  # пункт 5
+            'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s',
+        },
+    },# Далее определен фильтр, который пропускает записи только в случае, когда DEBUG = True и False .
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
+    'handlers': {
+        'console': {  # пункт 1, отправляет сообщения  DEBUG выше в консоль
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],  # накладывается фильтр, определенный выше
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        'console_warning': { # пункт 1, отправляет для сообщений WARNING
+            'level': 'WARNING',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'warning_console',
+        },
+        'console_error': {
+            'level': 'ERROR',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'error_file',
+        },
+        'file_general': { #2 в файл general выводятся сообщения
+            'level': 'INFO',
+            'filters': ['require_debug_false'],  # накладывается фильтр debug=false
+            'class': 'logging.FileHandler',
+            'filename': 'general.log',
+            'formatter': 'general_file',
+        },
+        'file_errors': { #3 в файл errors выводятся сообщения
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'errors.log',
+            'formatter': 'error_file',
+        },
+        'file_security': { # пункт 4, в файл security.log попадают сообщения
+            'class': 'logging.FileHandler',
+            'filename': 'security.log',
+            'formatter': 'security_file',
+        },
+        'mail_admins': { # пункт 5, отравка на почту сообщений ERROR
+            'level': 'ERROR',
+            'filters': ['require_debug_false'], # при debug_false
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'error_mail',
+        },
+    },
+    'loggers': {
+        'django': {  # Регистратор django отправляет все сообщения на консоль
+            'handlers': ['console', 'console_warning', 'console_error', 'file_general'],
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['file_errors', 'mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.server': {
+            'handlers': ['file_errors', 'mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.template': {
+            'handlers': ['file_errors'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.db_backends': {
+            'handlers': ['file_errors'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.security': {
+            'handlers': ['file_security'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}

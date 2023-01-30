@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>Здравствуйте, {{ user.username }}!</h2>
+<p> Новая статья в твоём любимом разделе: ''{{ post.content|truncatechars:50 }}''. Полное содержание <a href="http://127.0.0.1:8000/article/{{ post.id }}">по ссылке.</a> .
+</p>
+</body>
+</html>

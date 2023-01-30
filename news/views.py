@@ -1,17 +1,14 @@
 # Импортируем класс, который говорит нам о том,
 # что в этом представлении мы будем выводить список объектов из БД
-from datetime import datetime
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, ListView, TemplateView
-from .models import Post, Author, User
-from .filters import PostFilter
-from .forms import PostForm
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.views.generic import TemplateView
-from django.shortcuts import render, redirect
+from .models import Post, Author, User, SubscribersCategory
+from .filters import PostFilter, PostCategoryFilter
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic.edit import CreateView
+from .forms import PostForm, SubscribeForm
+
+
 
 
 class PostList(ListView):
@@ -90,3 +87,15 @@ class PostSearch(ListView):
         context = super(PostSearch, self).get_context_data(**kwargs)
         context['filterset'] = self.filterset
         return context
+
+
+class SubscriberView(CreateView):
+    model = SubscribersCategory
+    form_class = SubscribeForm
+    template_name = 'subscribe.html'
+    success_url = reverse_lazy('post_list')
+
+    def form_valid(self, form):
+        subscribe = form.save(commit=False)
+        subscribe.subscriber = User.objects.get(pk=self.request.user.id)
+        return super(SubscriberView, self).form_valid(form)

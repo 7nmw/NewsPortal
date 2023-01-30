@@ -1,0 +1,24 @@
+2022-12-11 14:34:12,068 ERROR Internal Server Error: /subscribe/post/ C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\utils\log.py (exc_info)
+Traceback (most recent call last):
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\edit.py", line 184, in post
+    return super().post(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\edit.py", line 153, in post
+    return self.form_valid(form)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\news\views.py", line 100, in form_valid
+    subscribe.subscriber = User.objects.get(pk=self.request.user.id)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\db\models\query.py", line 650, in get
+    raise self.model.DoesNotExist(
+django.contrib.auth.models.User.DoesNotExist: User matching query does not exist.
+2022-12-11 14:34:12,101 ERROR "POST /subscribe/post/ HTTP/1.1" 500 110785 C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\servers\basehttp.py (exc_info)
+2022-12-11 15:24:03,454 ERROR "GET /subscribe/post/ HTTP/1.1" 500 59 C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\servers\basehttp.py (exc_info)
+2022-12-11 20:44:59,930 ERROR "GET /news/ HTTP/1.1" 500 59 C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\servers\basehttp.py None
