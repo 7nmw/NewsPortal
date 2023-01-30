@@ -5,6 +5,12 @@
 
 Создана структура база данных db.sqlite3
 
+Создание виртуального окружения
+python -m venv venv
+
+Активация вирутального окружения
+venv\scripts\activate
+
 Установим Django:
 pip install django
 
