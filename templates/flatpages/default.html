@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load i18n %}
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -12,7 +13,26 @@
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     </head>
     <body>
+    <form action="{% url 'set_language' %}" method="POST"> {% csrf_token %} <!-- Не забываем по csrf_token для POST запросов -->
+        <input type="hidden" name="next" value="{{ redirect_to }}">
+
+        <select name="language" id="">
+            {% get_available_languages as LANGUAGES %} <!-- получаем языки -->
+            {% get_language_info_list for LANGUAGES as languages %} <!-- Помещаем их в список languages -->
+
+            {% for language in languages %} <!-- Итерируясь по списку, выводим их название на языке пользователя и код -->
+                <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+                    {{ language.name_local }} - {{ language.code }}
+                </option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Применить">
+    </form>
+
+
+
         <!-- Responsive navbar-->
+
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
             <div class="container">
                 <a class="navbar-brand" href="#">Django flatpages</a>
@@ -29,24 +49,27 @@
                                 <span class="sr-only">(current)</span>
                             </a>
                         </li>
+                        {% load cache %}
+                        {% cache 30 sidebar %}
                         <li class="nav-item">
-                            <a class="nav-link" href="/news/">News</a>
+                            <a class="nav-link" href="/news/">{% trans 'Новости' %}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/news/create/">Create news</a>
+                            <a class="nav-link" href="/news/create/">{% trans 'Создать новость' %}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/article/create/">Create article</a>
+                            <a class="nav-link" href="/article/create/">{% trans 'Создать статью' %}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/news/search">Search</a>
+                            <a class="nav-link" href="/news/search">{% trans 'Поиск' %}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/accounts/login/">Sign In</a>
+                            <a class="nav-link" href="/accounts/login/">{% trans 'Войти' %}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/subscribe/post/">Subscribe</a>
+                            <a class="nav-link" href="/subscribe/post/">{% trans 'Подписаться' %}</a>
                         </li>
+                        {% endcache %}
                     </ul>
                 </div>
             </div>

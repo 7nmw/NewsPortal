@@ -9,8 +9,12 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+import logging
+logger = logging.getLogger(__name__)
+
 import os
 from pathlib import Path
+
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -24,26 +28,28 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY =os.getenv('DJ_SECRET_KEY')
+#SECRET_KEY ='asdw1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'modeltranslation',
     'django.contrib.admin', #админка
     'django.contrib.auth', # система аутентификации.
     'django.contrib.contenttypes', # фреймворк для content types.
     'django.contrib.sessions', #сессионный фреймворк.
     'django.contrib.messages', #фреймворк для отправки сообщений.
     'django.contrib.staticfiles', #фреймворк для работы со статичными файлами.
+    'debug_toolbar', #для оптимизации сайта
     'news.apps.NewsConfig',
     'django.contrib.sites',
     'django.contrib.flatpages',
-#    'news',
     'accounts',
     'django_filters',
     'sign',
@@ -67,6 +73,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'news.middlewares.TimezoneMiddleware', # add that middleware!
 ]
 
 ROOT_URLCONF = 'NewsPaper.urls'
@@ -127,7 +136,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
@@ -135,8 +144,14 @@ USE_I18N = True
 
 USE_TZ = True
 
+LANGUAGES = [
+    ('en-us', 'English'),
+    ('ru', 'Русский')
+]
 
-
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale')
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -193,3 +208,124 @@ APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 
 # если задача не выполняется за 25 секунд, то она автоматически снимается, можете поставить время побольше, но как правило, это сильно бьёт по производительности сервера
 APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, 'coolsite_cache'),
+    }
+}
+
+#Логирование
+
+LOGGING = {
+    'version': 1, #ключ version всегда определяется как 1, на текущий момент это единственно допустимое значение
+    'disable_existing_loggers': False, # контролирует работу существующей (стандартной) схемы логирования Django.
+    'formatters': { #простой формат записи сообщений. В данном случае это уровень логирования сообщения и само сообщение.
+        'simple': {
+            'format': '%(asctime)s %(levelname)s %(message)s', # пункт 1 часть 1
+        },
+        'warning_console': { # пункт 1 часть 2
+            'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s %(exc_info)s',
+        },
+        'general_file': { # пункт 2
+            'format': '%(asctime)s %(levelname)s %(module)s %(message)s',
+        },
+        'error_file': { # пункт 3
+            'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s %(exc_info)s',
+        },
+        'security_file': { # пункт 4
+            'format': '%(asctime)s %(levelname)s %(module)s %(message)s',
+        },
+        'error_mail': {  # пункт 5
+            'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s',
+        },
+    },# Далее определен фильтр, который пропускает записи только в случае, когда DEBUG = True и False .
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
+    'handlers': {
+        'console': {  # пункт 1, отправляет сообщения  DEBUG выше в консоль
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],  # накладывается фильтр, определенный выше
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        'console_warning': { # пункт 1, отправляет для сообщений WARNING
+            'level': 'WARNING',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'warning_console',
+        },
+        'console_error': {
+            'level': 'ERROR',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'error_file',
+        },
+        'file_general': { #2 в файл general выводятся сообщения
+            'level': 'INFO',
+            'filters': ['require_debug_false'],  # накладывается фильтр debug=false
+            'class': 'logging.FileHandler',
+            'filename': 'general.log',
+            'formatter': 'general_file',
+        },
+        'file_errors': { #3 в файл errors выводятся сообщения
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'errors.log',
+            'formatter': 'error_file',
+        },
+        'file_security': { # пункт 4, в файл security.log попадают сообщения
+            'class': 'logging.FileHandler',
+            'filename': 'security.log',
+            'formatter': 'security_file',
+        },
+        'mail_admins': { # пункт 5, отравка на почту сообщений ERROR
+            'level': 'ERROR',
+            'filters': ['require_debug_false'], # при debug_false
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'error_mail',
+        },
+    },
+    'loggers': {
+        'django': {  # Регистратор django отправляет все сообщения на консоль
+            'handlers': ['console', 'console_warning', 'console_error', 'file_general'],
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['file_errors', 'mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.server': {
+            'handlers': ['file_errors', 'mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.template': {
+            'handlers': ['file_errors'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.db_backends': {
+            'handlers': ['file_errors'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.security': {
+            'handlers': ['file_security'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}

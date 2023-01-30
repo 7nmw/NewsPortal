@@ -1,0 +1,164 @@
+2022-12-11 14:34:12,068 ERROR Internal Server Error: /subscribe/post/ C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\utils\log.py (exc_info)
+Traceback (most recent call last):
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\edit.py", line 184, in post
+    return super().post(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\edit.py", line 153, in post
+    return self.form_valid(form)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\news\views.py", line 100, in form_valid
+    subscribe.subscriber = User.objects.get(pk=self.request.user.id)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\db\models\query.py", line 650, in get
+    raise self.model.DoesNotExist(
+django.contrib.auth.models.User.DoesNotExist: User matching query does not exist.
+2022-12-11 14:34:12,101 ERROR "POST /subscribe/post/ HTTP/1.1" 500 110785 C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\servers\basehttp.py (exc_info)
+2022-12-11 15:24:03,454 ERROR "GET /subscribe/post/ HTTP/1.1" 500 59 C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\servers\basehttp.py (exc_info)
+2022-12-11 20:44:59,930 ERROR "GET /news/ HTTP/1.1" 500 59 C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\servers\basehttp.py None
+2023-01-30 17:02:42,020 ERROR Internal Server Error: /news/ C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\utils\log.py (<class 'AttributeError'>, AttributeError("'NoneType' object has no attribute 'streaming'"), <traceback object at 0x0000029E3BABD480>)
+Traceback (most recent call last):
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\utils\decorators.py", line 155, in _wrapped_view
+    return middleware.process_response(request, response)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\middleware\cache.py", line 88, in process_response
+    if response.streaming or response.status_code not in (200, 304):
+AttributeError: 'NoneType' object has no attribute 'streaming'
+2023-01-30 17:02:42,062 ERROR "GET /news/ HTTP/1.1" 500 86723 C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\servers\basehttp.py None
+2023-01-30 17:05:29,079 ERROR Internal Server Error: /news/ C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\utils\log.py (<class 'NameError'>, NameError("name 'MyModel' is not defined"), <traceback object at 0x000001E910B773C0>)
+Traceback (most recent call last):
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\utils\decorators.py", line 133, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\news\views.py", line 44, in get
+    models = MyModel.objects.all()
+NameError: name 'MyModel' is not defined
+2023-01-30 17:05:29,098 ERROR "GET /news/ HTTP/1.1" 500 95451 C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\servers\basehttp.py None
+2023-01-30 17:05:30,827 ERROR Internal Server Error: /news/ C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\utils\log.py (<class 'NameError'>, NameError("name 'MyModel' is not defined"), <traceback object at 0x000001E90F98EB00>)
+Traceback (most recent call last):
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\utils\decorators.py", line 133, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\news\views.py", line 44, in get
+    models = MyModel.objects.all()
+NameError: name 'MyModel' is not defined
+2023-01-30 17:05:30,847 ERROR "GET /news/ HTTP/1.1" 500 95452 C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\servers\basehttp.py None
+2023-01-30 17:05:59,698 ERROR Internal Server Error: /news/ C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\utils\log.py (<class 'NameError'>, NameError("name 'MyModel' is not defined"), <traceback object at 0x00000195FAF2F300>)
+Traceback (most recent call last):
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\utils\decorators.py", line 133, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\news\views.py", line 46, in get
+    models = MyModel.objects.all()
+NameError: name 'MyModel' is not defined
+2023-01-30 17:05:59,742 ERROR "GET /news/ HTTP/1.1" 500 95453 C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\servers\basehttp.py None
+2023-01-30 17:06:15,020 ERROR Internal Server Error: /news/ C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\utils\log.py (<class 'AttributeError'>, AttributeError("type object 'PostList' has no attribute 'objects'"), <traceback object at 0x000002289E48D2C0>)
+Traceback (most recent call last):
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\utils\decorators.py", line 133, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\news\views.py", line 46, in get
+    models = PostList.objects.all()
+AttributeError: type object 'PostList' has no attribute 'objects'
+2023-01-30 17:06:15,065 ERROR "GET /news/ HTTP/1.1" 500 95742 C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\servers\basehttp.py None
+2023-01-30 17:06:16,297 ERROR Internal Server Error: /news/ C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\utils\log.py (<class 'AttributeError'>, AttributeError("type object 'PostList' has no attribute 'objects'"), <traceback object at 0x000002289F6D4EC0>)
+Traceback (most recent call last):
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\utils\decorators.py", line 133, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\news\views.py", line 46, in get
+    models = PostList.objects.all()
+AttributeError: type object 'PostList' has no attribute 'objects'
+2023-01-30 17:06:16,319 ERROR "GET /news/ HTTP/1.1" 500 95741 C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\servers\basehttp.py None
+2023-01-30 17:07:29,786 ERROR Internal Server Error: /news/ C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\utils\log.py (<class 'AttributeError'>, AttributeError("type object 'PostList' has no attribute 'objects'"), <traceback object at 0x000001D86A6EA180>)
+Traceback (most recent call last):
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\utils\decorators.py", line 133, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\news\views.py", line 46, in get
+    models = PostList.objects.all()
+AttributeError: type object 'PostList' has no attribute 'objects'
+2023-01-30 17:07:29,829 ERROR "GET /news/ HTTP/1.1" 500 95742 C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\servers\basehttp.py None
+2023-01-30 17:07:30,697 ERROR Internal Server Error: /news/ C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\utils\log.py (<class 'AttributeError'>, AttributeError("type object 'PostList' has no attribute 'objects'"), <traceback object at 0x000001D86B97E7C0>)
+Traceback (most recent call last):
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\utils\decorators.py", line 133, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\news\views.py", line 46, in get
+    models = PostList.objects.all()
+AttributeError: type object 'PostList' has no attribute 'objects'
+2023-01-30 17:07:30,718 ERROR "GET /news/ HTTP/1.1" 500 95741 C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\servers\basehttp.py None
+2023-01-30 17:09:18,884 ERROR Internal Server Error: /news/ C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\utils\log.py (<class 'AttributeError'>, AttributeError("type object 'PostList' has no attribute 'objects'"), <traceback object at 0x000001D86BB8A040>)
+Traceback (most recent call last):
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\utils\decorators.py", line 133, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\dinislam\PycharmProjects\Django_D_7\news\views.py", line 46, in get
+    form_class = PostForm
+AttributeError: type object 'PostList' has no attribute 'objects'
+2023-01-30 17:09:18,904 ERROR "GET /news/ HTTP/1.1" 500 95677 C:\Users\dinislam\PycharmProjects\Django_D_7\venv\lib\site-packages\django\core\servers\basehttp.py None

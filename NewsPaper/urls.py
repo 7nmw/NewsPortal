@@ -29,4 +29,6 @@ urlpatterns = [
    path('sign/', include('sign.urls')),
    path('accounts/', include('allauth.urls')), #http://127.0.0.1:8000/accounts/login/
    path('subscribe/', include('news.urls')), #http://127.0.0.1:8000/subscribe/
+   path('__debug__/', include('debug_toolbar.urls')),
+   path('i18n/', include('django.conf.urls.i18n')), # подключаем встроенные эндопинты для работы с локализацией
 ]
