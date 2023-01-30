@@ -10,7 +10,6 @@ from .forms import PostForm, SubscribeForm
 
 
 
-
 class PostList(ListView):
     # Указываем модель, объекты которой мы будем выводить
     model = Post

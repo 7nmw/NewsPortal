@@ -1,5 +1,5 @@
 {% extends 'flatpages/default.html' %}
-
+{% load i18n %}
 {% load custom_filters %}
 {% load custom_tags %}
 
@@ -8,18 +8,17 @@ News
 {% endblock title %}
 
 {% block content %}
-   <h1>Список новостей</h1>
+   <h1>{% trans 'Список новостей' %}</h1>
 
-   <h4>Всего новостей {{news|length}} </h4>
-
+   <h4>{% trans 'Всего новостей' %} {{news|length}} </h4>
 
    <hr>
    {% if news %}
        <table>
            <tr>
-               <td>Заголовок</td>
-               <td>Дата публикации</td>
-               <td>Содержание</td>
+               <td>{% trans 'Заголовок' %}</td>
+               <td>{% trans 'Дата публикации' %}</td>
+               <td>{% trans 'Содержание' %}</td>
            </tr>
 
            {% for post in news %}
@@ -30,7 +29,7 @@ News
            </tr>
            {% endfor %}
     <form action="/subscribe/post/">
-        <input type="submit" value="Подписаться на новинки в категории">
+        <input type="submit" value="{% trans 'Подписаться на новинки в категории' %}">
     </form>
        </table>
    {% else %}
