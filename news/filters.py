@@ -1,7 +1,7 @@
 from django_filters import FilterSet, DateFilter
 from django.forms import DateInput
-from .models import Post
-
+from .models import Post, PostCategory
+import django_filters
 
 
 
@@ -19,3 +19,9 @@ class PostFilter(FilterSet):
             'header': ['icontains'],
             'category_post': ['exact'],
         }
+
+
+class PostCategoryFilter(FilterSet):
+    class Meta:
+        model = PostCategory
+        fields = ['category']

@@ -1,6 +1,9 @@
 from django.db import models
+from django.urls import reverse
 from django.contrib.auth.models import User
 from django.urls import reverse
+
+
 
 article = 'AR'
 news = 'NE'
@@ -25,9 +28,13 @@ class Author(models.Model):  # наследуемся от класса Model
             self.user_rating += comment.rating_comment
         self.save()
 
+    def __str__(self):
+        return f'{self.user_name}'
+
 
 class Category(models.Model):
     name_category = models.CharField(max_length=255, unique=True)
+    subscribers = models.ManyToManyField(User, through='SubscribersCategory')
 
     def __str__(self):
         return f'{self.name_category}'
@@ -67,6 +74,9 @@ class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE) #	связь «один ко многим» с моделью Post;
     category = models.ForeignKey(Category, on_delete=models.CASCADE) #	связь «один ко многим» с моделью Category.
 
+    def __str__(self):
+        return f'{self.post.content}: {self.category.name_category}'
+
 
 class Comment(models.Model):
     post_comment = models.ForeignKey(Post, on_delete=models.CASCADE)  # связь «один ко многим» с моделью Post;
@@ -82,3 +92,11 @@ class Comment(models.Model):
     def dislike(self, amount=0):
         self.rating_comment -= amount
         self.save()
+
+
+class SubscribersCategory(models.Model):
+    subscriber = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.category}: {self.subscriber}'

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>Здравствуйте, {{ user.username }}!</h2>
+<p>В вашей любимой категории опубликованы новинки за прошедшую неделю:</p>
+
+<table>
+    {% for post in posts %}
+    <tr>
+        <td>{{ post.header|truncatewords:4 }}. Читай по <a href="http://127.0.0.1:8000/article/{{ post.id }}">по ссылке.</a> </td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
