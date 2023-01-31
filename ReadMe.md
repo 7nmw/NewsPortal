@@ -9,9 +9,6 @@
 
 Установим все библиотеки для работы приложения pip install -r requirements.txt
 
-Установим Django:
-pip install django
-
 Запускаем приложение:
 python manage.py runserver
 
